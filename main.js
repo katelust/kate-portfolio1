@@ -8,7 +8,7 @@ window.show = function show(page) {
 }
 
 // last.fm
-const LASTFM_API_KEY = "06fb3434108e79af4737918e7795cab0";
+const LASTFM_API_KEY = "";
 const LASTFM_USER = "Katelustgarten";
 
 const BASE_URL = "https://ws.audioscrobbler.com/2.0/";
