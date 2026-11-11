@@ -1,3 +1,74 @@
+// Render experiences from portfolio-data.js so roles and artists are easy to edit in one file.
+function renderExperience(listId, entries) {
+  const container = document.getElementById(listId);
+  if (!container || !Array.isArray(entries)) return;
+  container.replaceChildren();
+
+  entries.forEach(entry => {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const header = document.createElement('div');
+    header.className = 'card-header';
+    const title = document.createElement('strong');
+    title.textContent = entry.title || '';
+    header.appendChild(title);
+    if (entry.meta) {
+      const meta = document.createElement('span');
+      meta.className = 'meta';
+      meta.textContent = entry.meta;
+      header.appendChild(meta);
+    }
+    card.appendChild(header);
+
+    if (entry.tag) {
+      const tag = document.createElement('p');
+      tag.className = 'meta tag';
+      tag.textContent = entry.tag;
+      card.appendChild(tag);
+    }
+    (entry.paragraphs || []).forEach(paragraph => {
+      const p = document.createElement('p');
+      p.textContent = paragraph;
+      card.appendChild(p);
+    });
+
+    if (Array.isArray(entry.artists) && entry.artists.length) {
+      const working = document.createElement('div');
+      working.className = 'working-with';
+      const label = document.createElement('span');
+      label.className = 'working-label';
+      label.textContent = 'Working with';
+      working.appendChild(label);
+      const list = document.createElement('div');
+      list.className = 'artist-list';
+
+      entry.artists.forEach(name => {
+        const profileId = window.portfolioData?.spotifyArtists?.[name];
+        const link = document.createElement('a');
+        link.className = 'artist-chip';
+        link.textContent = name;
+        link.href = profileId
+          ? 'https://open.spotify.com/artist/' + encodeURIComponent(profileId)
+          : 'https://open.spotify.com/search/' + encodeURIComponent(name) + '/artists';
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.title = profileId ? 'Open ' + name + ' on Spotify' : 'Find ' + name + ' on Spotify';
+        if (!profileId) link.dataset.spotifySearch = 'true';
+        list.appendChild(link);
+      });
+      working.appendChild(list);
+      card.appendChild(working);
+    }
+    container.appendChild(card);
+  });
+}
+
+if (window.portfolioData) {
+  renderExperience('tech-experience-cards', window.portfolioData.techExperience);
+  renderExperience('music-experience-cards', window.portfolioData.musicExperience);
+}
+
 // Toggle between Technical and Music pages
 window.show = function show(page) {
   document.getElementById('page-tech').classList.toggle('hidden', page !== 'tech');
