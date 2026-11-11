@@ -320,3 +320,13 @@ h2 { font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.1em; text-t
   border-color: var(--text);
   transform: translateY(-1px);
 }
+
+/* Spotify artist links are genuine clickable buttons; unverified names open artist search. */
+.artist-list a.artist-chip {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform .15s, border-color .15s, background-color .15s;
+}
+.artist-list a.artist-chip:hover { background-color: var(--tag-bg); opacity: 1; }
+.artist-list a.artist-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
